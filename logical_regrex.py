@@ -8,6 +8,7 @@ Shape : data, features
 
 data: rows containing the data
 features: the headers basically
+it has to have a matrix with the data
 '''
 
 def sF(x):
