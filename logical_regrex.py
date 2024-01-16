@@ -1,5 +1,15 @@
 import numpy as np
 
+
+'''
+X is goint to be a class
+where has the next attributes
+Shape : data, features
+
+data: rows containing the data
+features: the headers basically
+'''
+
 def sF(x):
     '''
     Represents the sigmoid function
@@ -38,9 +48,11 @@ class logical_Rgrex:
             output = sF(power)
             #calculate the error and adjust the weights 'n bias accordingly 
             
+            #the gradient for each one
             dw = 1/samples*np.dot(X.T , (output - y))
             db = 1/samples*np.sum(output - y)
             
+            # ajsdusting value = value - learning rate * gradient
             self.weights = self.weights - self.l_rate*dw
             self.bias = self.bias - self.l_rate*db
 
