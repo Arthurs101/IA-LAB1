@@ -63,7 +63,7 @@ class logical_Rgrex:
     def predict(self, X):
             linear_pred = np.dot(X, self.weights) + self.bias
             y_pred = sF(linear_pred)
-            outputs = [0 if y<=0.5 else 1 for y in y_pred]
+            outputs = np.array([0 if y<=0.5 else 1 for y in y_pred])
             return outputs
 
     
