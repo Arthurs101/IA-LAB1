@@ -1,6 +1,5 @@
 import numpy as np
 
-
 '''
 X is goint to be a class
 where has the next attributes
@@ -40,12 +39,15 @@ class logical_Rgrex:
         Function implied : y(x) = 1 / 1 + e^(-wx +b)
         '''
 
-        features, samples = X.shape
-        self.weights = np.zeros(features) #No. of weights = No. Features
+        samples,features = X.shape
+        self.weights = np.zeros((features,1)) #No. of weights = No. Features
+        self.bias = 0
 
         #start the training for the machine
         for _ in range(self.iterate):
-            power = np.dot(X,self.weights) + self.bias
+            #calculates the wx + b 
+            power = np.dot(X,self.weights) + self.bias 
+            
             output = sF(power)
             #calculate the error and adjust the weights 'n bias accordingly 
             
@@ -59,6 +61,14 @@ class logical_Rgrex:
 
 
     def predict(self, X):
-            power = np.dot(X,self.weights) + self.bias
-            output = sF(power)
-            return [0 if Oi  <= 0.5 else 1 for Oi in output ]
+            linear_pred = np.dot(X, self.weights) + self.bias
+            y_pred = sF(linear_pred)
+            outputs = [0 if y<=0.5 else 1 for y in y_pred]
+            return outputs
+
+    
+
+        
+        
+
+
