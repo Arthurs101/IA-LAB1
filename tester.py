@@ -35,7 +35,7 @@ Xts = Xts.values
 Yts = Yts.values
 
 
-agent = IA(L=0.001,n=len(Xt))
+agent = IA(L=0.0015,n=len(Xt))
 
 agent.fit_function(Xt,Yt)
 
@@ -58,41 +58,39 @@ print("model accuraccy" , round(acc, 2), "%")
 correlation = pd.DataFrame(test_data[["length_url","web_traffic"]])
 correlation = correlation.reset_index(drop=True)
 
-def get_result_label(prediction, real_value):
-    if prediction == 1 and real_value == 1:
-        return "tp"
-    elif prediction == 0 and real_value == 0:
-        return "tn"
-    elif prediction == 1 and real_value == 0:
-        return "fp"
-    else:
-        return "fn"
 
-correlation["result"] = [get_result_label(p, y) for p, y in zip(predictions, Yts)]
+
+correlation["result"] = predictions.tolist()
 
 
 import matplotlib.pyplot as plt
 
 
 
-colors = {"tp": "green", "tn": "blue", "fp": "red", "fn": "orange"}  # Color mapping for labels
+phishing_color = "red"  # Color for "1" (phishing)
+non_phishing_color = "green"  # Color for "0" (no phishing)
 
-plt.figure(figsize=(10, 6))  
+plt.figure(figsize=(10, 6))
 
 for i, row in correlation.iterrows():
     x = row["length_url"]
     y = row["web_traffic"]
-    color = colors[row["result"]]
+    color = phishing_color if row["result"] == 1 else non_phishing_color
 
-    plt.scatter(x, y, c=color, s=40) 
+    plt.scatter(x, y, c=color, s=40)
 
 plt.xlabel("Length URL")
 plt.ylabel("Web Traffic")
-plt.title("Correlación de clasificacion basado en largo del url y su tráfico como fraudulento")
+plt.title("Correlation of Length URL and Web Traffic with Phishing Classification")
 
-plt.grid(True) 
-legend_labels = list(list(colors.keys()))
-legend_handles = [plt.Circle((0, 0), 1, color=colors[label]) for label in legend_labels]
+plt.grid(True)
 
-plt.legend(legend_handles, legend_labels, title="Classification Result")
+# Optional legend
+legend_labels = ["Phishing", "No Phishing"]
+legend_handles = [
+    plt.Circle((0, 0), 1, color=phishing_color),
+    plt.Circle((0, 0), 1, color=non_phishing_color),
+]
+plt.legend(legend_handles, legend_labels, title="Classification")
+
 plt.show()

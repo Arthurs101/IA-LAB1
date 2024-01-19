@@ -1,5 +1,4 @@
 import numpy as np
-
 '''
 X is goint to be a class
 where has the next attributes
