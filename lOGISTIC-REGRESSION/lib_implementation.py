@@ -36,7 +36,48 @@ Yts = Yts.values.flatten()
 
 model = LogisticRegression(solver='liblinear', random_state=0).fit(Xt, Yt)
 
-test_results = model.predict(Xts)
+predictions = model.predict(Xts)
 
-accuracy = np.sum(test_results==Yts)/Yts.size
+accuracy = np.sum(predictions==Yts)/Yts.size
 print('Accuracy of the model:', accuracy)
+
+#graphics analysis
+correlation = pd.DataFrame(test_data[["length_url","web_traffic"]])
+correlation = correlation.reset_index(drop=True)
+
+
+
+correlation["result"] = predictions.tolist()
+
+
+import matplotlib.pyplot as plt
+
+
+
+phishing_color = "red"  # Color for "1" (phishing)
+non_phishing_color = "green"  # Color for "0" (no phishing)
+
+plt.figure(figsize=(10, 6))
+
+for i, row in correlation.iterrows():
+    x = row["length_url"]
+    y = row["web_traffic"]
+    color = phishing_color if row["result"] == 1 else non_phishing_color
+
+    plt.scatter(x, y, c=color, s=40)
+
+plt.xlabel("Length URL")
+plt.ylabel("Web Traffic")
+plt.title("Correlation of Length URL and Web Traffic with Phishing Classification")
+
+plt.grid(True)
+
+# Optional legend
+legend_labels = ["Phishing", "No Phishing"]
+legend_handles = [
+    plt.Circle((0, 0), 1, color=phishing_color),
+    plt.Circle((0, 0), 1, color=non_phishing_color),
+]
+plt.legend(legend_handles, legend_labels, title="Classification")
+
+plt.show()
